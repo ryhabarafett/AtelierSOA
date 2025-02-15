@@ -1,0 +1,36 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.table-responsive {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.navbar {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-action {
+    margin-right: 5px;
+}
+
+.modal-content {
+    border-radius: 10px;
+}
+
+.modal-header {
+    background-color: #f8f9fa;
+    border-radius: 10px 10px 0 0;
+}
+
+.alert {
+    animation: fadeOut 5s forwards;
+    animation-delay: 3s;
+}
+
+@keyframes fadeOut {
+    from {opacity: 1;}
+    to {opacity: 0; height: 0; margin: 0; padding: 0; border: 0;}
+}

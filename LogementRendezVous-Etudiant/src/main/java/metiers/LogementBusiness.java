@@ -1,88 +1,52 @@
 package metiers;
 
 import entities.Logement;
-import entities.RendezVous;
 
-import javax.ws.rs.core.Response;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LogementBusiness {
-    private List<Logement> logements ;
+    // In-memory storage for demonstration purposes
+    private static Map<Integer, Logement> logements = new HashMap<>();
 
-    public LogementBusiness() {
-        logements=new ArrayList<Logement>();
-        logements.add(new Logement(1,"27, Rue des roses", "El ghazela","Ariana","Studio","cuisine equipee",300f));
-        logements.add(new Logement(5,"58, Rue des roses", "El ghazela","Ariana","EtageVilla","cuisine equipee",450f));
-        logements.add(new Logement(2,"201, R�sidence Omrane4", "Riadh El Andalous","Ariana","EtageVilla","chauffage central, ascenseur, climatisation",700f));
-        logements.add(new Logement(3,"540, R�sidence Les Tulipes", "El Aouina","Ariana","Appartement","S+2, chauffage central, ascenseur, climatisation",500f));
-        logements.add(new Logement(4,"78, Rue des Oranges", "Bardo","Tunis","EtageVilla","chauffage central, ascenseur, climatisation",400f));
-
+    // Initialize with some sample data
+    static {
+        logements.put(1, new Logement(1, "123 Rue Principale", "La Marsa", "Tunis", "Appartement", "Beau appartement avec vue sur mer", 1200.0f));
+        logements.put(2, new Logement(2, "45 Avenue Habib Bourguiba", "Centre Ville", "Tunis", "Bureau", "Espace de bureau moderne", 2500.0f));
+        logements.put(3, new Logement(3, "67 Rue des Jasmins", "Sousse Ville", "Sousse", "Villa", "Grande villa avec jardin", 3500.0f));
     }
 
+    public List<Logement> getLogements() {
+        return new ArrayList<>(logements.values());
+    }
 
-    public Logement getLogementsByReference(int reference){
+    public Logement getLogementByReference(int reference) {
+        return logements.get(reference);
+    }
 
-        for (Logement l:logements){
-            if(l.getReference()==reference)
-                return l;
-        }
-        return null;
-    }
-    public boolean addLogement(Logement logement){
-
-       return logements.add(logement);
-    }
-    public List<Logement> getLogementsByDeleguation(String deleguation){
-        List<Logement> liste=new ArrayList<Logement>();
-        for (Logement l:logements){
-            if(l.getDelegation().equals(deleguation))
-                liste.add(l);
-        }
-        return liste;
-    }
-    public List<Logement> getLogementsListeByref(int reference){
-        List<Logement> liste=new ArrayList<Logement>();
-        for (Logement l:logements){
-            if(l.getReference()== reference)
-                liste.add(l);
-        }
-        return liste;
-    }
-    public boolean deleteLogement(int reference){
-        Iterator<Logement> iterator=logements.iterator();
-        while(iterator.hasNext()){
-            Logement l=iterator.next();
-            if(l.getReference()==reference){
-                iterator.remove();
-                return true;
-            }
-        }
-        return false;
-    }
-    public boolean updateLogement(int reference, Logement logement){
-        int index = -1;
-        for (int i = 0; i < logements.size(); i++) {
-            if (logements.get(i).getReference() == reference) {
-                index = i;
-                break;
-            }
-        }
-
-        if (index != -1) {
-            logements.set(index, logement);
-            return true;
-        } else {
+    public boolean addLogement(Logement logement) {
+        if (logements.containsKey(logement.getReference())) {
             return false;
         }
-    }
-    public List<Logement> getLogements() {
-        return logements;
-    }
-
-    public void setLogements(List<Logement> logements) {
-        this.logements = logements;
+        logements.put(logement.getReference(), logement);
+        return true;
     }
 
+    public boolean updateLogement(Logement logement) {
+        if (!logements.containsKey(logement.getReference())) {
+            return false;
+        }
+        logements.put(logement.getReference(), logement);
+        return true;
+    }
+
+    public boolean deleteLogement(int reference) {
+        if (!logements.containsKey(reference)) {
+            return false;
+        }
+        logements.remove(reference);
+        return true;
+    }
 }

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Logements</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+        #logements {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            width: 250px;
+        }
+        .card h2 {
+            margin: 0;
+            color: #2c3e50;
+        }
+        .card p {
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+<h1>Liste des Logements</h1>
+<div id="logements"></div>
+
+
+
+<script>
+    const apiUrl = "http://localhost:8088/LogementRendezVous_Etudiant_war_exploded/api/logement/getAll";
+
+
+
+    async function getLogements() {
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                mode: 'cors'
+            });
+
+
+
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP : ${response.status}`);
+            }
+
+
+
+            const logements = await response.json();
+            const container = document.getElementById('logements');
+            container.innerHTML = '';
+
+
+
+            logements.forEach(logement => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+<h2>${logement.type}</h2>
+<p><strong>Adresse:</strong> ${logement.adresse}</p>
+<p><strong>Délégation:</strong> ${logement.delegation}</p>
+<p><strong>Gouvernorat:</strong> ${logement.gouvernorat}</p>
+<p><strong>Description:</strong> ${logement.description}</p>
+<p><strong>Prix:</strong> ${logement.prix} €</p>
+          `;
+                container.appendChild(card);
+            });
+        } catch (error) {
+            console.error('Erreur lors de la récupération des logements :', error);
+            alert('Problème de connexion avec le serveur. Vérifiez votre configuration CORS.');
+        }
+    }
+
+
+
+    window.onload = getLogements;
+</script>
+</body>
+</html>
